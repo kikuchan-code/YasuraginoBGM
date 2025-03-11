@@ -2,7 +2,7 @@
   "id": "/YasuraginoBGM/",
   "name": "やすらぎのBGM",
   "short_name": "BGM",
-  "description": "A calming background music app.",
+  "description": "ゆったりとしたBGMをバックグラウンドで流します。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#3CB371",

@@ -3,6 +3,7 @@ const CACHE_NAME = 'yasuragi-bgm-cache-v1'; // ← CACHE_NAME を定義
 const BASE_URL = '/YasuraginoBGM'; // GitHub Pages のリポジトリ名
 const urlsToCache = [
     `${BASE_URL}/`,
+    `${BASE_URL}/favicon.ico`,
     `${BASE_URL}/index.html`,
     `${BASE_URL}/manifest.json`,
     `${BASE_URL}/BGM/Nodoka.mp3`,

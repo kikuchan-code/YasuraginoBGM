@@ -5,6 +5,8 @@ const urlsToCache = [
     `${BASE_URL}/`,
     `${BASE_URL}/favicon.ico`,
     `${BASE_URL}/index.html`,
+    `${BASE_URL}/styles.css`,
+    `${BASE_URL}/script.js`,
     `${BASE_URL}/manifest.json`,
     `${BASE_URL}/BGM/Nodoka.mp3`,
     `${BASE_URL}/BGM/Night_Jazz_Piano_Instrumental_Music.mp3`,

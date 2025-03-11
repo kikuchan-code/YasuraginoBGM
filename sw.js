@@ -20,8 +20,10 @@ const urlsToCache = [
     `${BASE_URL}/alarm/canon.mp3`,
     `${BASE_URL}/alarm/hotarunohikari.mp3`,
     `${BASE_URL}/alarm/hananowarutu.mp3`,
-    `${BASE_URL}/icons/icon-192x192.png`,
-    `${BASE_URL}/icons/icon-512x512.png`,
+    `${BASE_URL}/img/icon-192x192.png`,
+    `${BASE_URL}/img/icon-512x512.png`,
+    `${BASE_URL}/screenshots/screenshot_mobile.png`,
+    `${BASE_URL}/screenshots/screenshot_pc.png`,
 ];
 
 self.addEventListener('install', (event) => {

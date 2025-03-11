@@ -29,8 +29,15 @@ const urlsToCache = [
     `${BASE_URL}/screenshots/screenshot_pc.png`,
 ];
 
+// Service Worker インストール時にキャッシュを作成
 self.addEventListener("install", (event) => {
     console.log("Service Worker installing...");
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log("Caching files...");
+            return cache.addAll(urlsToCache);
+        })
+    );
     self.skipWaiting(); // すぐに新しいSWを適用
 });
 

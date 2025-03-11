@@ -1,26 +1,27 @@
-const CACHE_NAME = 'bgm-cache-v1';
+const BASE_URL = '/YasuraginoBGM'; // GitHub Pages のリポジトリ名
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/BGM/Nodoka.mp3',
-    '/BGM/Night_Jazz_Piano_Instrumental_Music.mp3',
-    '/BGM/Natural_Sonic_guiter.mp3',
-    '/BGM/inaka.mp3',
-    '/Nature/takibi.mp3',
-    '/Nature/rain.mp3',
-    '/Nature/seseragi.mp3',
-    '/Nature/saezuri.mp3',
-    '/Nature/musinokoe.mp3',
-    '/alarm/ainoaisatsu.mp3',
-    '/alarm/otomenoinori.mp3',
-    '/alarm/komoriuta.mp3',
-    '/alarm/canon.mp3',
-    '/alarm/hotarunohikari.mp3',
-    '/alarm/hananowarutu.mp3',
-    '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png',
+    `${BASE_URL}/`,
+    `${BASE_URL}/index.html`,
+    `${BASE_URL}/manifest.json`,
+    `${BASE_URL}/BGM/Nodoka.mp3`,
+    `${BASE_URL}/BGM/Night_Jazz_Piano_Instrumental_Music.mp3`,
+    `${BASE_URL}/BGM/Natural_Sonic_guiter.mp3`,
+    `${BASE_URL}/BGM/inaka.mp3`,
+    `${BASE_URL}/Nature/takibi.mp3`,
+    `${BASE_URL}/Nature/rain.mp3`,
+    `${BASE_URL}/Nature/seseragi.mp3`,
+    `${BASE_URL}/Nature/saezuri.mp3`,
+    `${BASE_URL}/Nature/musinokoe.mp3`,
+    `${BASE_URL}/alarm/ainoaisatsu.mp3`,
+    `${BASE_URL}/alarm/otomenoinori.mp3`,
+    `${BASE_URL}/alarm/komoriuta.mp3`,
+    `${BASE_URL}/alarm/canon.mp3`,
+    `${BASE_URL}/alarm/hotarunohikari.mp3`,
+    `${BASE_URL}/alarm/hananowarutu.mp3`,
+    `${BASE_URL}/icons/icon-192x192.png`,
+    `${BASE_URL}/icons/icon-512x512.png`,
 ];
+
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

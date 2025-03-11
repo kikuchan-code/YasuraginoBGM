@@ -3,8 +3,6 @@ const urlsToCache = [
     '/',
     '/index.html',
     '/manifest.json',
-    '/script.js',
-    '/style.css',
     '/BGM/Nodoka.mp3',
     '/BGM/Night_Jazz_Piano_Instrumental_Music.mp3',
     '/BGM/Natural_Sonic_guiter.mp3',

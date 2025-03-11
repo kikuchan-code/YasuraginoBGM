@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <title>ゆったりBGM</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img\icon192x192.png">
+    <link rel="shortcut icon" href="img\icon192x192.ico" />
+</head>
+
+<body>
+    <header>
+        <h1>ゆったりBGM</h1>
+    </header>
+    <main>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="tabs">
+                    <div class="tab" data-tab="BGMsettings">
+                        <p><span class="br">BGM</span><span class="br">設定</span></p>
+                    </div>
+                    <div class="tab active" data-tab="settings">
+                        <p><span class="br">アラーム</span><span class="br">タイマー</span><span class="br">設定</span></p>
+                    </div>
+                    <div class="tab" data-tab="list">
+                        <p>設定した<br>もの一覧</p>
+                    </div>
+                    <div class="tab" data-tab="defalt-list">
+                        <p>デフォルト<br>アラーム</p>
+                    </div>
+                    <div class="tab" data-tab="manual">使い方</div>
+                </div>
+
+                <div id="BGMsettings" class="tab-content">
+                    <div class="tab-box">
+                        <h2>BGM設定</h2>
+                        <div class="box0">
+                            <div class="box0">
+                                <label for="modeSelect">再生モード:</label>
+                                <select id="modeSelect">
+                                    <option value="bgm">BGM</option>
+                                    <option value="nature">自然音</option>
+                                </select>
+                            </div>
+                            <div class="box0">
+                                <label for="bgmSelect">BGM選択:</label>
+                                <select id="bgmSelect">
+                                    <option value="random">ランダム</option>
+                                    <option value="./BGM/Nodoka.mp3">のどか</option>
+                                    <option value="./BGM/Night_Jazz_Piano_Instrumental_Music.mp3">ナイトジャズのピアノ</option>
+                                    <option value="./BGM/Natural_Sonic_guiter.mp3">アコースティックギター(Natural_Sonic)</option>
+                                    <option value="./BGM/inaka.mp3">田舎に行こう</option>
+                                </select>
+                            </div>
+                            <div class="box0">
+                                <label for="natureSelect">自然音選択:</label>
+                                <select id="natureSelect">
+                                    <option value="random">ランダム</option>
+                                    <option value="./Nature/takibi.mp3">焚き火の音</option>
+                                    <!--焚き火の音は「Forest of wing」、それ以外は「自然の音」（Youtubeチャンネル名）-->
+                                    <option value="./Nature/seseragi.mp3">せせらぎの音</option>
+                                    <option value="./Nature/saezuri.mp3">さえずりの音</option>
+                                    <option value="./Nature/rain.mp3">雨の音</option>
+                                    <option value="./Nature/musinokoe.mp3">虫の声</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings" class="tab-content active">
+                    <div class="tab-box">
+                        <h2>アラーム・タイマー設定</h2>
+                        <div class="typebox">
+                            <label>タイプ:
+                                <select id="alarmType">
+                                    <option value="alarm">アラーム</option>
+                                    <option value="timer">タイマー</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="check-box">
+                            <label><input type="radio" name="setType" value="date" checked> 日付指定</label>
+                            <label><input type="radio" name="setType" value="weekday"> 曜日指定</label>
+                        </div>
+                        <div id="weekdaySelection" style="display: none;">
+                            <label>曜日指定:</label>
+                            <label><input type="checkbox" value="0">日</label>
+                            <label><input type="checkbox" value="1">月</label>
+                            <label><input type="checkbox" value="2">火</label>
+                            <label><input type="checkbox" value="3">水</label>
+                            <label><input type="checkbox" value="4">木</label>
+                            <label><input type="checkbox" value="5">金</label>
+                            <label><input type="checkbox" value="6">土</label>
+                        </div>
+                        <div>
+                            <label>日付: <input type="date" id="alarmDate"></label>
+                        </div>
+                        <div>
+                            <label>時刻: <input type="time" id="alarmTime"></label>
+                        </div>
+                        <div>
+                            <label>名称: <input type="text" id="alarmName"></label>
+                        </div>
+
+                        <div id="alarmSettings">
+                            <div class="alarmSetting">
+                                <label>音声ファイル:
+                                    <select id="alarmFile">
+                                        <option value="alarm/komoriuta.mp3">子守唄(ブラームス)</option>
+                                        <option value="alarm/ainoaisatsu.mp3">愛の挨拶</option>
+                                        <option value="alarm/otomenoinori.mp3">乙女の祈り</option>
+                                        <option value="alarm/hananowarutu.mp3">花のワルツ[くるみ割り人形]</option>
+                                        <option value="alarm/canon.mp3">カノン</option>
+                                        <option value="alarm/hotarunohikari.mp3">蛍の光</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="alarmSetting"><label><input type="checkbox" id="bgmOff">
+                                    アラームの後にBGMを再開しない</label></div>
+                        </div>
+                        <div id="warningMessage" style="display: none; color: red;"></div>
+                    </div>
+                    <div class="sw-box">
+                        <button id="addalarm">追加</button>
+                    </div>
+                </div>
+
+                <div id="list" class="tab-content">
+                    <div class="tab-box">
+                        <h2>ユーザーが設定したアラーム・タイマー</h2>
+                        <div id="alarmContainer" class="alarm-list"></div>
+                    </div>
+                </div>
+
+                <div id="defalt-list" class="tab-content">
+                    <div class="tab-box">
+                        <h2>デフォルトで設定しているアラーム</h2>
+                        <p class="defalt-list-contents">どのアラームも、BGMが流れているときのみ鳴ります。</p>
+                        <table>
+                            <tr>
+                                <th>時刻</th>
+                                <th>音楽</th>
+                                <th>条件</th>
+                            </tr>
+                            <tr>
+                                <td>17:00</td>
+                                <td>子守唄</td>
+                                <td>毎日</td>
+                            </tr>
+                            <tr>
+                                <td>18:00</td>
+                                <td>愛の挨拶</td>
+                                <td>平日</td>
+                            </tr>
+                            <tr>
+                                <td>19:00</td>
+                                <td>乙女の祈り</td>
+                                <td>平日</td>
+                            </tr>
+                            <tr>
+                                <td>20:00</td>
+                                <td>花のワルツ</td>
+                                <td>平日</td>
+                            </tr>
+                            <tr>
+                                <td>21:00</td>
+                                <td>カノン</td>
+                                <td>平日</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="manual" class="tab-content">
+                    <div class="tab-box">
+                        <h2>使い方</h2>
+                        <p class="manual-contents">
+                            　PCでは、特に何もしなくても動作します。<br>　スマホの場合は、「ファイルマネージャー＋」等の外部ファイル管理アプリで開いてください。<br>（「ファイルマネージャー＋」はHTTPサーバーが付属しています。）
+                        </p>
+                    </div>
+                </div>
+
+                <button id="closeModal">閉じる</button>
+            </div>
+        </div>
+
+
+        <div id="message"></div> <!-- メmaniッセージを表示するための要素 -->
+        <br>
+        <div class="sw-box">
+            <button id="openModal">設定</button>
+            <button id="bgmToggle">BGM 再生/停止</button>
+        </div>
+    </main>
+
+    <script type="text/javascript" src="script.js">
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(reg => console.log('Service Worker registered!', reg))
+                .catch(err => console.log('Service Worker registration failed:', err));
+        }
+    </script>
+
+</body>
+
+
+</html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yasuragi-bgm-cache-v2'; // ← CACHE_NAME を定義
+const CACHE_NAME = 'yasuragi-bgm-cache-v3'; // ← CACHE_NAME を定義
 
 const BASE_URL = '/YasuraginoBGM'; // GitHub Pages のリポジトリ名
 const urlsToCache = [
@@ -34,11 +34,25 @@ self.addEventListener("install", (event) => {
     console.log("Service Worker installing...");
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log("Caching files...");
-            return cache.addAll(urlsToCache);
+            console.log("Fetching and caching files...");
+            return Promise.allSettled(
+                urlsToCache.map(url =>
+                    fetch(url, { mode: "cors" })
+                        .then(response => {
+                            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                            return cache.put(url, response);
+                        })
+                )
+            ).then((results) => {
+                results.forEach((result, index) => {
+                    if (result.status === "rejected") {
+                        console.error(`Failed to cache ${urlsToCache[index]}:`, result.reason);
+                    }
+                });
+            });
         })
     );
-    self.skipWaiting(); // すぐに新しいSWを適用
+    self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {

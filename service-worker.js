@@ -1,5 +1,8 @@
 const CACHE_NAME = 'bgm-cache-v1';
 const urlsToCache = [
+    '/YasuraginoBGM/',
+];
+/*const urlsToCache = [
     '/',
     '/index.html',
     '/manifest.json',
@@ -20,7 +23,7 @@ const urlsToCache = [
     './alarm/hananowarutu.mp3',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
-];
+];*/
 
 // Install the service worker and cache the required files
 self.addEventListener('install', (event) => {

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="img\icon192x192.png">
     <link rel="shortcut icon" href="img\icon192x192.ico" />
-    <script src="script.js"></script>
 </head>
 
 <body>
@@ -202,16 +201,16 @@
 
     <script>
         if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-        .then((registration) => {
-            console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch((error) => {
-            console.log('Service Worker registration failed:', error);
-        });
-}
+            navigator.serviceWorker.register('sw.js')
+                .then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch((error) => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
     </script>
-
+    <script src="script.js"></script>
 </body>
 
 

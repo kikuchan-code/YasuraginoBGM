@@ -1,4 +1,4 @@
-const CACHE_NAME = "yasuragi-bgm-cache-v6"; // キャッシュ名変更（更新時はバージョンアップ）
+const CACHE_NAME = "yasuragi-bgm-cache-v7"; // キャッシュ名変更（更新時はバージョンアップ）
 const BASE_URL = self.location.origin + "/YasuraginoBGM"; // GitHub Pages 用にフルパス
 
 const urlsToCache = [
@@ -29,7 +29,6 @@ const urlsToCache = [
     `${BASE_URL}/screenshots/screenshot_pc.png`,
 ];
 
-// インストール時にキャッシュ
 self.addEventListener("install", (event) => {
     console.log("Service Worker installing...");
     event.waitUntil(
@@ -37,12 +36,12 @@ self.addEventListener("install", (event) => {
             console.log("Fetching and caching files...");
             return Promise.allSettled(
                 urlsToCache.map(url =>
-                    fetch(url)
+                    fetch(url, { mode: "cors" })
                         .then(response => {
                             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                             return cache.put(url, response.clone());
                         })
-                        .catch(error => console.warn(`Failed to fetch ${url}:`, error)) // 失敗しても続行
+                        .catch(error => console.warn(`Failed to fetch ${url}:`, error))
                 )
             );
         })
@@ -50,7 +49,6 @@ self.addEventListener("install", (event) => {
     self.skipWaiting();
 });
 
-// activate で古いキャッシュを削除
 self.addEventListener("activate", (event) => {
     console.log("Service Worker activating...");
     event.waitUntil(
@@ -67,23 +65,24 @@ self.addEventListener("activate", (event) => {
     );
 });
 
-// fetch イベントでキャッシュ利用 & オフライン対応
 self.addEventListener("fetch", (event) => {
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
                 return cachedResponse;
             }
+
             return fetch(event.request)
                 .then((response) => {
+                    if (!event.request.url.startsWith("http") || event.request.method !== "GET") {
+                        return response;
+                    }
                     return caches.open(CACHE_NAME).then((cache) => {
-                        // 応答をキャッシュに保存（ストリームは1度しか使用できないため clone する）
                         cache.put(event.request, response.clone());
                         return response;
                     });
                 })
                 .catch(() => {
-                    // オフライン時にキャッシュがない場合、フォールバックを提供
                     if (event.request.destination === "audio") {
                         return caches.match(`${BASE_URL}/BGM/Nodoka.mp3`);
                     } else if (event.request.destination === "document") {

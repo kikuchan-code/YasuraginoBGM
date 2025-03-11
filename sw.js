@@ -26,30 +26,24 @@ const urlsToCache = [
     `${BASE_URL}/screenshots/screenshot_pc.png`,
 ];
 
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
-            })
-            .catch((error) => {
-                console.error('Failed to cache', error);
-            })
-    );
+self.addEventListener("install", (event) => {
+    console.log("Service Worker installing...");
+    self.skipWaiting(); // すぐに新しいSWを適用
 });
 
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [CACHE_NAME];
+self.addEventListener("activate", (event) => {
+    console.log("Service Worker activating...");
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
-                    if (!cacheWhitelist.includes(cacheName)) {
+                    if (cacheName !== CACHE_NAME) {
                         return caches.delete(cacheName);
                     }
                 })
             );
+        }).then(() => {
+            return self.clients.claim(); // 新しい SW をすぐ適用
         })
     );
 });

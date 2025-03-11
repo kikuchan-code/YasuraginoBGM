@@ -1,6 +1,6 @@
-const CACHE_NAME = 'yasuragi-bgm-cache-v4'; // ← CACHE_NAME を定義
+const CACHE_NAME = "yasuragi-bgm-cache-v5"; // キャッシュ名変更（更新時はバージョンアップ）
+const BASE_URL = self.location.origin + "/YasuraginoBGM"; // GitHub Pages 用にフルパス
 
-const BASE_URL = '/YasuraginoBGM'; // GitHub Pages のリポジトリ名
 const urlsToCache = [
     `${BASE_URL}/`,
     `${BASE_URL}/favicon.ico`,
@@ -29,7 +29,7 @@ const urlsToCache = [
     `${BASE_URL}/screenshots/screenshot_pc.png`,
 ];
 
-// Service Worker インストール時にキャッシュを作成
+// インストール時にキャッシュ
 self.addEventListener("install", (event) => {
     console.log("Service Worker installing...");
     event.waitUntil(
@@ -40,7 +40,7 @@ self.addEventListener("install", (event) => {
                     fetch(url, { mode: "cors" })
                         .then(response => {
                             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                            return cache.put(url, response);
+                            return cache.put(url, response.clone()); // response を clone してキャッシュ
                         })
                 )
             ).then((results) => {
@@ -55,27 +55,24 @@ self.addEventListener("install", (event) => {
     self.skipWaiting();
 });
 
+// activate で古いキャッシュを削除
 self.addEventListener("activate", (event) => {
     console.log("Service Worker activating...");
     event.waitUntil(
         caches.keys().then((cacheNames) => {
-            console.log("Existing caches:", cacheNames); // 確認
             return Promise.all(
                 cacheNames
                     .filter((cacheName) => cacheName !== CACHE_NAME)
-                    .map((cacheName) => {
-                        console.log("Deleting cache:", cacheName);
-                        return caches.delete(cacheName);
-                    })
+                    .map((cacheName) => caches.delete(cacheName))
             );
         }).then(() => {
             console.log("Old caches deleted.");
-            return self.clients.claim(); // 新しい SW をすぐ適用
+            return self.clients.claim();
         })
     );
 });
 
-
+// fetch イベントでキャッシュ利用 & オフライン時の処理
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request)
@@ -87,3 +84,6 @@ self.addEventListener('fetch', (event) => {
             })
     );
 });
+
+
+

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yasuragi-bgm-cache-v1'; // ← CACHE_NAME を定義
+const CACHE_NAME = 'yasuragi-bgm-cache-v2'; // ← CACHE_NAME を定義
 
 const BASE_URL = '/YasuraginoBGM'; // GitHub Pages のリポジトリ名
 const urlsToCache = [
@@ -36,18 +36,22 @@ self.addEventListener("activate", (event) => {
     console.log("Service Worker activating...");
     event.waitUntil(
         caches.keys().then((cacheNames) => {
+            console.log("Existing caches:", cacheNames); // 確認
             return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheName !== CACHE_NAME) {
+                cacheNames
+                    .filter((cacheName) => cacheName !== CACHE_NAME)
+                    .map((cacheName) => {
+                        console.log("Deleting cache:", cacheName);
                         return caches.delete(cacheName);
-                    }
-                })
+                    })
             );
         }).then(() => {
+            console.log("Old caches deleted.");
             return self.clients.claim(); // 新しい SW をすぐ適用
         })
     );
 });
+
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(

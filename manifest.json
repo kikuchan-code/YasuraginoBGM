@@ -3,7 +3,7 @@
   "name": "やすらぎのBGM",
   "short_name": "BGM",
   "description": "ゆったりとしたBGMをバックグラウンドで流します。",
-  "start_url": "/",
+  "start_url": "/YasuraginoBGM/",
   "display": "standalone",
   "background_color": "#3CB371",
   "theme_color": "#3CB371",

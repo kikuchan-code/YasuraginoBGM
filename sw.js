@@ -1,4 +1,4 @@
-const CACHE_NAME = "yasuragi-bgm-cache-v7"; // キャッシュ名変更（更新時はバージョンアップ）
+const CACHE_NAME = "yasuragi-bgm-cache-v8"; // キャッシュ名変更（更新時はバージョンアップ）
 const BASE_URL = self.location.origin + "/YasuraginoBGM"; // GitHub Pages 用にフルパス
 
 const urlsToCache = [
@@ -38,7 +38,7 @@ self.addEventListener("install", (event) => {
                 urlsToCache.map(url =>
                     fetch(url, { mode: "cors" })
                         .then(response => {
-                            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                            if (!response.ok || response.status === 206) throw new Error(`HTTP error! Status: ${response.status}`);
                             return cache.put(url, response.clone());
                         })
                         .catch(error => console.warn(`Failed to fetch ${url}:`, error))
@@ -66,26 +66,39 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
+    let request = event.request;
+
+    // オーディオファイルの Range リクエストを防ぐ（完全なリクエストにする）
+    if (request.destination === "audio") {
+        request = new Request(request.url, {
+            method: "GET",
+            headers: new Headers({}), // Range ヘッダーを削除
+            mode: request.mode,
+            credentials: request.credentials,
+            redirect: request.redirect
+        });
+    }
+
     event.respondWith(
-        caches.match(event.request).then((cachedResponse) => {
+        caches.match(request).then((cachedResponse) => {
             if (cachedResponse) {
                 return cachedResponse;
             }
 
-            return fetch(event.request)
+            return fetch(request)
                 .then((response) => {
-                    if (!event.request.url.startsWith("http") || event.request.method !== "GET") {
+                    if (!request.url.startsWith("http") || request.method !== "GET" || response.status === 206) {
                         return response;
                     }
                     return caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, response.clone());
+                        cache.put(request, response.clone());
                         return response;
                     });
                 })
                 .catch(() => {
-                    if (event.request.destination === "audio") {
+                    if (request.destination === "audio") {
                         return caches.match(`${BASE_URL}/BGM/Nodoka.mp3`);
-                    } else if (event.request.destination === "document") {
+                    } else if (request.destination === "document") {
                         return caches.match(`${BASE_URL}/index.html`);
                     }
                 });

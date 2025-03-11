@@ -1,3 +1,5 @@
+const CACHE_NAME = 'yasuragi-bgm-cache-v1'; // ← CACHE_NAME を定義
+
 const BASE_URL = '/YasuraginoBGM'; // GitHub Pages のリポジトリ名
 const urlsToCache = [
     `${BASE_URL}/`,
@@ -22,13 +24,15 @@ const urlsToCache = [
     `${BASE_URL}/icons/icon-512x512.png`,
 ];
 
-
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
                 console.log('Opened cache');
                 return cache.addAll(urlsToCache);
+            })
+            .catch((error) => {
+                console.error('Failed to cache', error);
             })
     );
 });
